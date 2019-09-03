@@ -12,5 +12,8 @@ Tips: 高阶一致性是相对于低阶一致性来说的。像L1，L2损失就�
 ```
 ![SegGAN框架](image/framework.png)  
 
-SegGAN采用的损失函数结合了多分类交叉熵损失和对抗损失，并用一个超参数"$\lambda$"来平衡这两项损失。
-
+SegGAN采用的损失函数结合了多分类交叉熵损失和对抗损失，并用一个超参数$ \lambda $来平衡这两项损失:
+$$
+l(\theta_s,\theta_a) = \sum_{n=1}^{N}l_{mce}(s(x_n),y_n)-\lambda[l_{bce}(a(x_n,y_n),1)+l_{bce}(a(x_n,s(x_n)),0)]
+$$
+其中$ x \in H\times W\times 3 $为输入图像，$ s(x) \in H\times W\times C $为分类器生成的label map(C为所有类别的总数，对于每一个类别，都会输出一张label map)，y自然就是Ground truth了。$ \theta_s $和$ \theta_a $分别是Segmentor和Adversarial network需要学习的参数。
